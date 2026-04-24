@@ -1,0 +1,18 @@
+# API keys
+.env
+
+# PDF files (use your own)
+*.pdf
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.Python
+
+# HuggingFace model cache
+.cache/
+
+# OS
+.DS_Store
+Thumbs.db
