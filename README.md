@@ -28,6 +28,7 @@ Runs the same question twice with different chunk sizes and compares:
 | Vector store | `InMemoryVectorStore` | Zero-dependency, demo-appropriate |
 | LLM | `Groq / llama-3.1-8b-instant` | Fast, free tier available |
 | Chain | `LangChain LCEL` | Composable retriever + prompt + LLM |
+| Observability | `LangSmith` | Trace every run — latency, tokens, retrieved docs |
 
 ## Quickstart
 
@@ -55,8 +56,29 @@ First run downloads the embedding model (~90MB). Subsequent runs use the cached 
 - No reranking step — a cross-encoder reranker would improve precision on ambiguous queries
 - No evaluation metrics — production RAG should be measured with RAGAS (faithfulness, context precision, context recall)
 
+## Observability
+
+Every run is traced via [LangSmith](https://smith.langchain.com). Each trace shows the full pipeline breakdown:
+
+| Node | Experiment A (small chunks) | Experiment B (large chunks) |
+|---|---|---|
+| VectorStoreRetriever | 0.02s | 0.02s |
+| ChatGroq (LLM) | ~1.67s | ~0.90s |
+| Total latency | 1.69s | 0.94s |
+| Tokens used | 371 | 1,382 |
+
+**Insight:** Large chunks use 3.7× more tokens but are 44% faster end-to-end and produce higher-quality answers. The LLM call dominates latency — retrieval is negligible at this scale.
+
+To enable tracing, add to `.env`:
+```
+LANGCHAIN_TRACING_V2=true
+LANGCHAIN_API_KEY=your-langsmith-key
+LANGCHAIN_PROJECT=rag-demo
+```
+
 ## What this demonstrates
 
 - RAG pipeline architecture: loader → splitter → embedder → retriever → generator
 - Experimental thinking: controlled variable (chunk_size), observable outcome (answer quality)
 - Provider flexibility: Groq for generation, local model for embeddings — decoupled by design
+- Observability: LangSmith tracing to measure latency, token cost, and retrieval quality per run

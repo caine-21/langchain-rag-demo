@@ -76,7 +76,7 @@ def run_experiment(label: str, chunk_size: int, chunk_overlap: int):
     )
 
     # 5. 运行
-    answer = chain.invoke(QUESTION)
+    answer = chain.invoke(QUESTION, config={"run_name": f"实验{label}"})
     source_docs = retriever.invoke(QUESTION)
 
     print(f"\n问题：{QUESTION}")
