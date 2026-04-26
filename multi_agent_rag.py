@@ -29,6 +29,8 @@ from groq import Groq
 
 # ── Config ──────────────────────────────────────────────────────────────────────
 
+EXPERIMENT = "day7_policy_b_v1"  # policy B: conditional revise for medium severity
+
 PDF_PATH = "sample.pdf"
 API_KEY  = os.environ.get("GROQ_API_KEY", "")
 if not API_KEY:
@@ -118,8 +120,14 @@ def compute_severity(critique: dict) -> str:
         return "medium"
     return "low"
 
-def compute_verdict(severity: str) -> str:
-    return "revise" if severity == "high" else "accept"
+def compute_verdict(severity: str, critique: dict, grounding_score: int) -> str:
+    # policy B: medium is conditional — revise if hallucination present OR grounding < 3
+    if severity == "high":
+        return "revise"
+    if severity == "medium":
+        if len(critique["hallucinated_claims"]) > 0 or grounding_score < 3:
+            return "revise"
+    return "accept"
 
 # ── Revise Agent ─────────────────────────────────────────────────────────────────
 
@@ -210,27 +218,25 @@ def run_multi_agent(question: str, chain, retriever, groq_client: Groq) -> dict:
     critique = critic_agent(question, answer, contexts, groq_client)
     time.sleep(0.3)
 
-    # Step 3: Orchestrator — code computes severity and verdict
-    severity = compute_severity(critique)
-    verdict  = compute_verdict(severity)
+    # Step 3: Grounding score (before) — needed by Orchestrator for policy B
+    grounding_before = score_grounding(question, answer, contexts, groq_client)
+    time.sleep(0.3)
 
-    # Step 4: Revise if verdict == "revise" (max 1 pass)
+    # Step 4: Orchestrator — code computes severity and verdict (policy B)
+    severity = compute_severity(critique)
+    verdict  = compute_verdict(severity, critique, grounding_before["score"])
+
+    # Step 5: Revise if verdict == "revise" (max 1 pass)
     if verdict == "revise":
         revised_answer = revise_agent(question, answer, contexts, critique, groq_client)
         time.sleep(0.3)
-    else:
-        revised_answer = None
-
-    final_answer = revised_answer if revised_answer else answer
-
-    # Step 5: Grounding score before and after
-    grounding_before = score_grounding(question, answer, contexts, groq_client)
-    time.sleep(0.3)
-    if revised_answer:
         grounding_after = score_grounding(question, revised_answer, contexts, groq_client)
         time.sleep(0.3)
     else:
+        revised_answer = None
         grounding_after = grounding_before
+
+    final_answer = revised_answer if revised_answer else answer
 
     return {
         "question":         question,
@@ -246,8 +252,8 @@ def run_multi_agent(question: str, chain, retriever, groq_client: Groq) -> dict:
 
 def main():
     print("\n" + "="*60)
-    print("  Multi-Agent RAG — Day 6")
-    print("  Critic + Orchestrator + Revise Agent")
+    print(f"  Multi-Agent RAG — {EXPERIMENT}")
+    print("  Critic + Orchestrator (policy B) + Revise Agent")
     print("="*60)
 
     if not os.path.exists(PDF_PATH):
@@ -303,11 +309,11 @@ def main():
     print(f"Delta:              {avg_after - avg_before:+.2f}")
 
     os.makedirs("notes", exist_ok=True)
-    out_path = "notes/day6-results.json"
+    out_path = "notes/day7-results.json"
     with open(out_path, "w", encoding="utf-8") as f:
-        json.dump(results, f, ensure_ascii=False, indent=2)
+        json.dump({"experiment": EXPERIMENT, "results": results}, f, ensure_ascii=False, indent=2)
     print(f"\nFull results saved to {out_path}")
-    print("\n✓ Day 6 multi-agent pipeline complete.")
+    print(f"\n✓ {EXPERIMENT} complete.")
 
 if __name__ == "__main__":
     main()

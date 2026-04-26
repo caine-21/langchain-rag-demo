@@ -1,0 +1,120 @@
+{
+  "experiment": "day7_policy_b_v1",
+  "results": [
+    {
+      "question": "这份文档的主要内容是什么？",
+      "original_answer": "这份文档主要内容是李哲雷的个人简历，包括教育经历、实习经历、校园经历、技能爱好、项目经历等方面的信息。",
+      "critique": {
+        "hallucinated_claims": [],
+        "missing_facts": [],
+        "contradictions": []
+      },
+      "severity": "low",
+      "verdict": "accept",
+      "revised_answer": null,
+      "final_answer": "这份文档主要内容是李哲雷的个人简历，包括教育经历、实习经历、校园经历、技能爱好、项目经历等方面的信息。",
+      "grounding_before": {
+        "score": 5,
+        "reason": "The answer accurately summarizes the main content of the document, which includes various aspects of the individual's experiences and skills as presented in the retrieved context."
+      },
+      "grounding_after": {
+        "score": 5,
+        "reason": "The answer accurately summarizes the main content of the document, which includes various aspects of the individual's experiences and skills as presented in the retrieved context."
+      }
+    },
+    {
+      "question": "作者有哪些实习经历？",
+      "original_answer": "作者在药明康德 (WuXi AppTec) 有一段实习经历，担任生产实习生，时间为 2023.07-2024.02。",
+      "critique": {
+        "hallucinated_claims": [],
+        "missing_facts": [
+          "作者在实习期间的具体职责和成就，例如深入参与药品生产环节、提出改进建议、协助优化SOP、跟踪服务响应时间与修复周期等"
+        ],
+        "contradictions": []
+      },
+      "severity": "low",
+      "verdict": "accept",
+      "revised_answer": null,
+      "final_answer": "作者在药明康德 (WuXi AppTec) 有一段实习经历，担任生产实习生，时间为 2023.07-2024.02。",
+      "grounding_before": {
+        "score": 5,
+        "reason": "The answer fully and accurately reflects the information in the retrieved context about the author's internship experience."
+      },
+      "grounding_after": {
+        "score": 5,
+        "reason": "The answer fully and accurately reflects the information in the retrieved context about the author's internship experience."
+      }
+    },
+    {
+      "question": "作者的教育背景是什么？",
+      "original_answer": "作者的教育背景如下：\n\n- 本科：南通大学，生物技术，2020.09 -2024.06\n- 研究生：日本九州大学，芸術工学府，2024.09 -2025.09",
+      "critique": {
+        "hallucinated_claims": [],
+        "missing_facts": [
+          "获得的奖学金和其他教育经历相关信息，如三等奖学金、优秀志愿者、防疫工作优秀个人、国际交流优秀组织者"
+        ],
+        "contradictions": []
+      },
+      "severity": "low",
+      "verdict": "accept",
+      "revised_answer": null,
+      "final_answer": "作者的教育背景如下：\n\n- 本科：南通大学，生物技术，2020.09 -2024.06\n- 研究生：日本九州大学，芸術工学府，2024.09 -2025.09",
+      "grounding_before": {
+        "score": 5,
+        "reason": "The answer accurately reflects the author's education background as stated in the retrieved context."
+      },
+      "grounding_after": {
+        "score": 5,
+        "reason": "The answer accurately reflects the author's education background as stated in the retrieved context."
+      }
+    },
+    {
+      "question": "作者参与过哪些校园活动？",
+      "original_answer": "根据上下文，作者参与过以下校园活动：\n\n1. 作为组织委员，主动调研学生学习需求，策划并执行多场活动（200+人规模）。\n2. 被导师选拔为校级科普展讲解志愿者，面向 100 余名师生讲解“基因工程与生物技术”主题展览内容。\n3. 为帮助各国留学生快速融入留学生活，主动发起并统筹约80 名来自不同国家的文化交流活动。",
+      "critique": {
+        "hallucinated_claims": [],
+        "missing_facts": [
+          "获得三等奖学金、优秀志愿者、防疫工作优秀个人、国际交流优秀组织者等奖项"
+        ],
+        "contradictions": []
+      },
+      "severity": "low",
+      "verdict": "accept",
+      "revised_answer": null,
+      "final_answer": "根据上下文，作者参与过以下校园活动：\n\n1. 作为组织委员，主动调研学生学习需求，策划并执行多场活动（200+人规模）。\n2. 被导师选拔为校级科普展讲解志愿者，面向 100 余名师生讲解“基因工程与生物技术”主题展览内容。\n3. 为帮助各国留学生快速融入留学生活，主动发起并统筹约80 名来自不同国家的文化交流活动。",
+      "grounding_before": {
+        "score": 4,
+        "reason": "The answer accurately reflects most of the context, but includes a claim about a cultural exchange activity that is not fully supported by the provided context."
+      },
+      "grounding_after": {
+        "score": 4,
+        "reason": "The answer accurately reflects most of the context, but includes a claim about a cultural exchange activity that is not fully supported by the provided context."
+      }
+    },
+    {
+      "question": "作者有哪些技术技能？",
+      "original_answer": "根据上下文，作者李哲雷具有以下技术技能：\n\n1. 语言：Python、Office、PowerShell、命令行工具\n2. 语言：日语（N3 日常交流水平）、英语（CET-6，托福 80 分，商务水平）\n3. 技能：驾驶、Linux\n\n此外，作者还提到使用过AI编程辅助工具（Claude Code与VS Code Copilot），但这不算是技术技能，而是工具技能。",
+      "critique": {
+        "hallucinated_claims": [
+          "语言：Python"
+        ],
+        "missing_facts": [
+          "技能：python | office | powershell | 命令行工具 | 驾驶 | linux 中的 office、powershell、命令行工具、linux"
+        ],
+        "contradictions": []
+      },
+      "severity": "medium",
+      "verdict": "revise",
+      "revised_answer": "根据上下文，作者李哲雷具有以下技术技能：\n\n1. 编程语言：python\n2. 办公软件：office\n3. 脚本语言：powershell\n4. 工具：命令行工具、linux\n5. 驾驶\n6. 语言：日语（N3 日常交流水平）、英语（CET-6，托福 80 分，商务水平）",
+      "final_answer": "根据上下文，作者李哲雷具有以下技术技能：\n\n1. 编程语言：python\n2. 办公软件：office\n3. 脚本语言：powershell\n4. 工具：命令行工具、linux\n5. 驾驶\n6. 语言：日语（N3 日常交流水平）、英语（CET-6，托福 80 分，商务水平）",
+      "grounding_before": {
+        "score": 1,
+        "reason": "The answer ignores the context and provides unrelated technical skills."
+      },
+      "grounding_after": {
+        "score": 1,
+        "reason": "The answer ignores the context and lists unrelated technical skills that are not mentioned in the provided chunks."
+      }
+    }
+  ]
+}
